@@ -1,0 +1,130 @@
+[
+  {
+    "name": "Cozy Bean Café",
+    "category": "Cafes",
+    "budget_tier": 1,
+    "vibe_keywords": ["coffee", "tea", "chill", "board games", "conversation", "quiet", "study", "dessert", "bakery", "relaxing", "cozy"],
+    "time_slots": ["5PM-8PM", "8PM-11PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Cozy+Bean+Cafe"
+  },
+  {
+    "name": "Neon Arcade Arena",
+    "category": "Activity Lounges",
+    "budget_tier": 2,
+    "vibe_keywords": ["games", "arcade", "pinball", "fun", "loud", "friends", "beer", "active", "neon", "retro", "drinks"],
+    "time_slots": ["5PM-8PM", "8PM-11PM", "AfterMidnight"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Neon+Arcade+Arena"
+  },
+  {
+    "name": "Starlight Bowling Alley",
+    "category": "Activity Lounges",
+    "budget_tier": 2,
+    "vibe_keywords": ["bowling", "activity", "group", "loud", "active", "beer", "pizza", "fun", "competition"],
+    "time_slots": ["5PM-8PM", "8PM-11PM", "AfterMidnight"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Starlight+Bowling+Alley"
+  },
+  {
+    "name": "The Golden Dragon Dim Sum",
+    "category": "Casual Dining",
+    "budget_tier": 2,
+    "vibe_keywords": ["chinese", "dim sum", "dumplings", "noodles", "quick", "casual", "dinner", "asian", "food", "tasty"],
+    "time_slots": ["5PM-8PM", "8PM-11PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Golden+Dragon+Dim+Sum"
+  },
+  {
+    "name": "Taco Fiesta Street Stand",
+    "category": "Casual Dining",
+    "budget_tier": 1,
+    "vibe_keywords": ["tacos", "street food", "spicy", "mexican", "quick", "cheap", "late night", "casual", "burritos", "guacamole"],
+    "time_slots": ["5PM-8PM", "8PM-11PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Taco+Fiesta"
+  },
+  {
+    "name": "Sichuan Palace",
+    "category": "Casual Dining",
+    "budget_tier": 2,
+    "vibe_keywords": ["spicy", "chinese", "hotpot", "sichuan", "authentic", "fire", "dinner", "family style", "chili"],
+    "time_slots": ["5PM-8PM", "8PM-11PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Sichuan+Palace"
+  },
+  {
+    "name": "Lakeside Grill & Bar",
+    "category": "Casual Dining",
+    "budget_tier": 3,
+    "vibe_keywords": ["grill", "lake", "burgers", "outdoor", "patio", "scenic", "view", "steak", "beers", "wings"],
+    "time_slots": ["5PM-8PM", "8PM-11PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Lakeside+Grill"
+  },
+  {
+    "name": "The Velvet Room (Fine Dining)",
+    "category": "Fine Dining",
+    "budget_tier": 4,
+    "vibe_keywords": ["fancy", "expensive", "wine", "steak", "romantic", "exclusive", "quiet", "dinner", "classy", "gourmet"],
+    "time_slots": ["5PM-8PM", "8PM-11PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=The+Velvet+Room"
+  },
+  {
+    "name": "The Iron Tavern",
+    "category": "Bars",
+    "budget_tier": 2,
+    "vibe_keywords": ["beer", "drinks", "music", "loud", "pub", "tavern", "wings", "sports", "draft", "friends", "cheers"],
+    "time_slots": ["8PM-11PM", "AfterMidnight"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=The+Iron+Tavern"
+  },
+  {
+    "name": "Whiskey & Jazz Lounge",
+    "category": "Bars",
+    "budget_tier": 3,
+    "vibe_keywords": ["whiskey", "jazz", "music", "classy", "cocktails", "dark", "moody", "live band", "speakeasy"],
+    "time_slots": ["8PM-11PM", "AfterMidnight"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Whiskey+Jazz+Lounge"
+  },
+  {
+    "name": "Neon Dreams Nightclub",
+    "category": "Bars",
+    "budget_tier": 3,
+    "vibe_keywords": ["dance", "loud", "club", "electronic", "dj", "drinks", "shots", "nightlife", "dancing", "party"],
+    "time_slots": ["8PM-11PM", "AfterMidnight"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Neon+Dreams+Nightclub"
+  },
+  {
+    "name": "Retro Vinyl Bar",
+    "category": "Bars",
+    "budget_tier": 2,
+    "vibe_keywords": ["records", "vinyl", "music", "retro", "chill", "drinks", "beer", "aesthetic", "hipster", "lounge"],
+    "time_slots": ["8PM-11PM", "AfterMidnight"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Retro+Vinyl+Bar"
+  },
+  {
+    "name": "Central Park Meadows",
+    "category": "Parks",
+    "budget_tier": 1,
+    "vibe_keywords": ["walk", "green", "nature", "picnic", "fresh air", "chill", "outdoor", "free", "relax", "sunshine", "frisbee"],
+    "time_slots": ["5PM-8PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Central+Park+Meadows"
+  },
+  {
+    "name": "Summit Rock Climbing",
+    "category": "Activity Lounges",
+    "budget_tier": 3,
+    "vibe_keywords": ["active", "sports", "adventure", "indoor", "climbing", "workout", "fun", "exercise"],
+    "time_slots": ["5PM-8PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Summit+Rock+Climbing"
+  },
+  {
+    "name": "Escape Room Quest",
+    "category": "Activity Lounges",
+    "budget_tier": 3,
+    "vibe_keywords": ["puzzle", "escape", "team", "challenge", "indoor", "brain", "mysterious", "group"],
+    "time_slots": ["5PM-8PM", "8PM-11PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Escape+Room+Quest"
+  },
+  {
+    "name": "Sweet Retreat Bakery",
+    "category": "Cafes",
+    "budget_tier": 1,
+    "vibe_keywords": ["cake", "sweet", "coffee", "dessert", "bakery", "pastry", "cookies", "sugar", "tea"],
+    "time_slots": ["5PM-8PM"],
+    "maps_url": "https://www.google.com/maps/search/?api=1&query=Sweet+Retreat+Bakery"
+  }
+]

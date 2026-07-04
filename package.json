@@ -1,0 +1,15 @@
+{
+  "name": "vibematch-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "start:backend": "cd backend && npm run dev",
+    "start:frontend": "cd frontend && npm run web",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "test:backend": "cd backend && npm run test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
