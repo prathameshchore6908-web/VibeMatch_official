@@ -41,11 +41,11 @@ const getBaseUrl = (): string => {
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
       return 'http://localhost:4000';
     }
-    // In production, we'll use the same origin, or fallback to relative URL
-    return window.location.origin;
+    // In production, we use our live Render backend API
+    return 'https://vibematch-official.onrender.com';
   }
-  // Fallback for native devices in dev
-  return 'http://localhost:4000';
+  // Fallback for native devices in dev/prod
+  return 'https://vibematch-official.onrender.com';
 };
 
 export const API_BASE_URL = getBaseUrl();
