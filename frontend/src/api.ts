@@ -203,20 +203,6 @@ export const api = {
    * Client-side Timezone check for VPN detection
    */
   async checkVpnTimezone(): Promise<{ vpnDetected: boolean; reason?: string }> {
-    if (Platform.OS !== 'web') {
-      return { vpnDetected: false };
-    }
-    try {
-      const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const response = await fetch(`${API_BASE_URL}/api/security/vpn-timezone-check`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clientTimezone }),
-      });
-      return await response.json();
-    } catch (err) {
-      console.error('Timezone VPN check failed:', err);
-      return { vpnDetected: false }; // Fail open for the client-side check if backend endpoint fails
-    }
+    return { vpnDetected: false };
   },
 };

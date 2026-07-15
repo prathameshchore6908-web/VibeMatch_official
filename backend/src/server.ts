@@ -350,34 +350,6 @@ app.get('/api/room/:id', async (req, res) => {
  * Check Browser Timezone against Geolocation to detect VPN usage
  */
 app.post('/api/security/vpn-timezone-check', async (req, res) => {
-  const { clientTimezone } = req.body;
-  const ip = getClientIp(req);
-
-  if (isLocalIp(ip)) {
-    return res.json({ vpnDetected: false, reason: 'Localhost development bypass' });
-  }
-
-  if (!clientTimezone) {
-    return res.status(400).json({ error: 'MISSING_TIMEZONE', reason: 'Client timezone offset is required' });
-  }
-
-  const geoTimezone = await getIpTimezone(ip);
-  if (!geoTimezone) {
-    return res.json({ vpnDetected: false, reason: 'Could not fetch geolocation timezone' });
-  }
-
-  // Compare timezone strings
-  // E.g., if client says 'Asia/Kolkata' but geoIP says 'America/New_York'
-  const timezoneMismatch = clientTimezone.trim() !== geoTimezone.trim();
-
-  if (timezoneMismatch) {
-    console.warn(`[Blocked] Timezone mismatch detected for IP ${ip}: Client says "${clientTimezone}", GeoIP says "${geoTimezone}"`);
-    return res.json({ 
-      vpnDetected: true, 
-      reason: 'Access Denied. Timezone mismatch detected. Please turn off your VPN/Proxy.' 
-    });
-  }
-
   res.json({ vpnDetected: false });
 });
 

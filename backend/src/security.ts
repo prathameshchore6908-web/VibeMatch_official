@@ -101,58 +101,7 @@ export function rateLimiterMiddleware(req: any, res: any, next: any) {
  * Uses ip-api.com free tier (45 requests/min limit).
  */
 export async function isVpnOrProxy(ip: string): Promise<boolean> {
-  if (process.env.VPN_CHECK_ENABLED === 'false' || isLocalIp(ip)) {
-    return false;
-  }
-
-  // Check cache first
-  const cached = vpnCache.get(ip);
-  if (cached && Date.now() < cached.expiresAt) {
-    return cached.isVpn;
-  }
-
-  try {
-    // Call free ip-api.com endpoint with fields: proxy, hosting, isp, status
-    // Timeout of 2.5 seconds to prevent locking the app if api is slow
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2500);
-
-    const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,message,proxy,hosting,isp,timezone`, {
-      signal: controller.signal
-    });
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      return false; // Fail safe (don't lock out users if geolocation service has issues)
-    }
-
-    const data: any = await response.json();
-    if (data.status !== 'success') {
-      return false;
-    }
-
-    // Flag as VPN if hosting = true, proxy = true, or ISP name contains VPN keywords
-    const ispName = (data.isp || '').toLowerCase();
-    const vpnKeywords = [
-      'vpn', 'proxy', 'tor ', 'hosting', 'ovh', 'digitalocean', 'linode', 'mullvad', 
-      'nordvpn', 'expressvpn', 'private internet access', 'surfshark', 'cloudflare'
-    ];
-
-    const isVpn = data.proxy === true || 
-                  data.hosting === true || 
-                  vpnKeywords.some(keyword => ispName.includes(keyword));
-
-    // Store in cache
-    vpnCache.set(ip, {
-      isVpn,
-      expiresAt: Date.now() + VPN_CACHE_DURATION
-    });
-
-    return isVpn;
-  } catch (error) {
-    console.error(`Error checking VPN status for IP ${ip}:`, error);
-    return false; // Fail open to keep app functional if the free API is down/rate-limited
-  }
+  return false;
 }
 
 /**

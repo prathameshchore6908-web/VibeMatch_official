@@ -15,15 +15,7 @@ export default function RootLayout() {
   useEffect(() => {
     // Run client-side VPN/timezone checks on load
     const checkVpn = async () => {
-      try {
-        const res = await api.checkVpnTimezone();
-        if (res.vpnDetected) {
-          setBlockReason('vpn');
-          setBlockDetails(res.reason);
-        }
-      } catch (err) {
-        console.error('Timezone check failed:', err);
-      }
+      // Bypassed
     };
     checkVpn();
   }, []);
