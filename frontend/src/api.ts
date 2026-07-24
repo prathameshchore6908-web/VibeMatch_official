@@ -50,6 +50,8 @@ const getBaseUrl = (): string => {
 
 export const API_BASE_URL = getBaseUrl();
 
+let nativeHostId: string | null = null;
+
 // Retrieve or generate a unique Host Device ID
 export const getOrCreateHostId = (): string => {
   if (Platform.OS === 'web') {
@@ -60,7 +62,10 @@ export const getOrCreateHostId = (): string => {
     }
     return hostId;
   }
-  return 'host_native_fallback';
+  if (!nativeHostId) {
+    nativeHostId = 'host_native_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+  }
+  return nativeHostId;
 };
 
 // Track how many rooms this host has created in the last 24h

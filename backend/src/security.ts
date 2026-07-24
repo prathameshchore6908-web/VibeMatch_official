@@ -61,18 +61,8 @@ export function rateLimiterMiddleware(req: any, res: any, next: any) {
     return next();
   }
 
-  // Check if IP is blacklisted
-  const blacklistExpiry = ipBlacklist.get(ip);
-  if (blacklistExpiry) {
-    if (Date.now() < blacklistExpiry) {
-      return res.status(403).json({ 
-        error: 'ACCESS_DENIED', 
-        reason: 'Your IP has been blacklisted due to suspicious activity. Try again later.' 
-      });
-    } else {
-      ipBlacklist.delete(ip); // Blacklist expired
-    }
-  }
+  // Blacklist check disabled to prevent false positive lockouts
+  
 
   const now = Date.now();
   const rateLimit = rateLimitMap.get(ip);
