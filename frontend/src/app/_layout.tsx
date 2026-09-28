@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { View, StyleSheet, useColorScheme } from 'react-native';
-import { ThemeProvider, DarkTheme, DefaultTheme } from 'expo-router';
 import ErrorBoundary from '../components/ErrorBoundary';
 import DevToolsBlocker from '../components/DevToolsBlocker';
 import SecurityShield from '../components/SecurityShield';
 import { api } from '../api';
+import '../global.css';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -44,12 +44,10 @@ export default function RootLayout() {
 
   return (
     <ErrorBoundary>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <View style={styles.container}>
         <DevToolsBlocker onBlocked={(reason) => setBlockReason(reason)} />
-        <View style={styles.container}>
-          <Stack screenOptions={{ headerShown: false }} />
-        </View>
-      </ThemeProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </View>
     </ErrorBoundary>
   );
 }
@@ -60,4 +58,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#0A0915', // Root cyberpunk dark theme background
   },
 });
-export { RootLayout };

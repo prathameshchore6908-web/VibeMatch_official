@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Pressable, ActivityIndicator, Modal, Platform, useColorScheme, Image, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ActivityIndicator, Modal, Platform, useColorScheme, Image, Animated, Easing, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { api, getLocalRoomCount } from '../api';
 import { playClickSound } from '../utils/sound';
@@ -8,6 +8,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const isDark = true; // Force dark theme permanently
 
+  const { width: windowWidth, height: windowHeight } = Dimensions.get('window');
   const pathAnim = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {
@@ -24,41 +25,41 @@ export default function HomeScreen() {
   // Path 1: Top-Left to Center
   const leftX = pathAnim.interpolate({
     inputRange: [0, 0.25, 0.5, 0.75, 1],
-    outputRange: ['4%', '12%', '20%', '28%', '38%'],
+    outputRange: [windowWidth * 0.04, windowWidth * 0.12, windowWidth * 0.20, windowWidth * 0.28, windowWidth * 0.38],
   });
   const leftY = pathAnim.interpolate({
     inputRange: [0, 0.25, 0.5, 0.75, 1],
-    outputRange: ['23%', '38%', '43%', '45%', '45%'],
+    outputRange: [windowHeight * 0.23, windowHeight * 0.38, windowHeight * 0.43, windowHeight * 0.45, windowHeight * 0.45],
   });
 
   // Path 2: Top-Right to Center
   const rightX = pathAnim.interpolate({
     inputRange: [0, 0.25, 0.5, 0.75, 1],
-    outputRange: ['96%', '82%', '74%', '68%', '52%'],
+    outputRange: [windowWidth * 0.96, windowWidth * 0.82, windowWidth * 0.74, windowWidth * 0.68, windowWidth * 0.52],
   });
   const rightY = pathAnim.interpolate({
     inputRange: [0, 0.25, 0.5, 0.75, 1],
-    outputRange: ['18%', '28%', '36%', '52%', '48%'],
+    outputRange: [windowHeight * 0.18, windowHeight * 0.28, windowHeight * 0.36, windowHeight * 0.52, windowHeight * 0.48],
   });
 
   // Path 3: Bottom-Left to Center
   const bottomLeftX = pathAnim.interpolate({
     inputRange: [0, 0.25, 0.5, 0.75, 1],
-    outputRange: ['18%', '22%', '27%', '32%', '42%'],
+    outputRange: [windowWidth * 0.18, windowWidth * 0.22, windowWidth * 0.27, windowWidth * 0.32, windowWidth * 0.42],
   });
   const bottomLeftY = pathAnim.interpolate({
     inputRange: [0, 0.25, 0.5, 0.75, 1],
-    outputRange: ['72%', '78%', '89%', '80%', '65%'],
+    outputRange: [windowHeight * 0.72, windowHeight * 0.78, windowHeight * 0.89, windowHeight * 0.80, windowHeight * 0.65],
   });
 
   // Path 4: Bottom-Right to Center
   const bottomRightX = pathAnim.interpolate({
     inputRange: [0, 0.25, 0.5, 0.75, 1],
-    outputRange: ['82%', '78%', '73%', '68%', '58%'],
+    outputRange: [windowWidth * 0.82, windowWidth * 0.78, windowWidth * 0.73, windowWidth * 0.68, windowWidth * 0.58],
   });
   const bottomRightY = pathAnim.interpolate({
     inputRange: [0, 0.25, 0.5, 0.75, 1],
-    outputRange: ['72%', '78%', '89%', '80%', '65%'],
+    outputRange: [windowHeight * 0.72, windowHeight * 0.78, windowHeight * 0.89, windowHeight * 0.80, windowHeight * 0.65],
   });
 
   const dotOpacity = pathAnim.interpolate({
