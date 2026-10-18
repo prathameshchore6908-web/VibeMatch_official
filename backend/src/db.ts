@@ -483,19 +483,118 @@ class SupabaseAdapter implements DatabaseAdapter {
 }
 
 // ---------------------------------------------------------
+// Resilient Database Adapter (Auto-Failover to SQLite)
+// ---------------------------------------------------------
+export class ResilientDatabaseAdapter implements DatabaseAdapter {
+  private primary: SupabaseAdapter | null = null;
+  private fallback: SqliteAdapter;
+  public activeMode: 'supabase' | 'sqlite' = 'sqlite';
+
+  constructor(supabaseUrl?: string, supabaseKey?: string) {
+    const nodeEnv = process.env.NODE_ENV;
+    const dbFile = nodeEnv === 'test' ? ':memory:' : 'db.sqlite';
+    this.fallback = new SqliteAdapter(dbFile);
+
+    if (supabaseUrl && supabaseKey && supabaseUrl.trim() !== '' && supabaseKey.trim() !== '') {
+      this.primary = new SupabaseAdapter(supabaseUrl, supabaseKey);
+      this.activeMode = 'supabase';
+    }
+  }
+
+  async init(): Promise<void> {
+    await this.fallback.init();
+
+    if (this.primary) {
+      try {
+        await this.primary.init();
+        console.log('[Database] Supabase connected and verified.');
+        this.activeMode = 'supabase';
+      } catch (err: any) {
+        console.warn(`[Database] Supabase connection failed (${err?.message || err}). Auto-failing over to SQLite.`);
+        this.activeMode = 'sqlite';
+      }
+    }
+  }
+
+  private async executeWithFallback<T>(operation: (adapter: DatabaseAdapter) => Promise<T>): Promise<T> {
+    if (this.activeMode === 'sqlite' || !this.primary) {
+      return operation(this.fallback);
+    }
+
+    try {
+      return await operation(this.primary);
+    } catch (err: any) {
+      const errMsg = err?.message || String(err);
+      if (
+        errMsg.includes('fetch failed') ||
+        errMsg.includes('ENOTFOUND') ||
+        errMsg.includes('Failed connection') ||
+        errMsg.includes('Failed to fetch') ||
+        errMsg.includes('ECONNREFUSED')
+      ) {
+        console.warn(`[Database] Supabase operation failed (${errMsg}). Failing over to SQLite.`);
+        this.activeMode = 'sqlite';
+        return operation(this.fallback);
+      }
+      throw err;
+    }
+  }
+
+  createRoom(id: string, host_id: string, host_ip: string, consent_date?: string, terms_version?: string): Promise<Room> {
+    return this.executeWithFallback(a => a.createRoom(id, host_id, host_ip, consent_date, terms_version));
+  }
+
+  getRoom(id: string): Promise<Room | null> {
+    return this.executeWithFallback(a => a.getRoom(id));
+  }
+
+  getRoomsCreatedByIpInLast24Hours(ip: string): Promise<number> {
+    return this.executeWithFallback(a => a.getRoomsCreatedByIpInLast24Hours(ip));
+  }
+
+  getRoomsCreatedByHostInLast24Hours(host_id: string): Promise<number> {
+    return this.executeWithFallback(a => a.getRoomsCreatedByHostInLast24Hours(host_id));
+  }
+
+  cancelAllRoomsByIp(ip: string): Promise<void> {
+    return this.executeWithFallback(a => a.cancelAllRoomsByIp(ip));
+  }
+
+  joinRoom(roomId: string, nickname: string, ipAddress: string, consent_date?: string, terms_version?: string): Promise<Participant> {
+    return this.executeWithFallback(a => a.joinRoom(roomId, nickname, ipAddress, consent_date, terms_version));
+  }
+
+  getParticipants(roomId: string): Promise<Participant[]> {
+    return this.executeWithFallback(a => a.getParticipants(roomId));
+  }
+
+  getParticipantInRoom(roomId: string, nickname: string): Promise<Participant | null> {
+    return this.executeWithFallback(a => a.getParticipantInRoom(roomId, nickname));
+  }
+
+  submitPreferences(roomId: string, nickname: string, availability: string, budget: number, vibeText: string): Promise<void> {
+    return this.executeWithFallback(a => a.submitPreferences(roomId, nickname, availability, budget, vibeText));
+  }
+
+  updateRoomResult(roomId: string, status: 'matched' | 'expired', result: string | null): Promise<void> {
+    return this.executeWithFallback(a => a.updateRoomResult(roomId, status, result));
+  }
+
+  expireRoomsCron(): Promise<number> {
+    return this.executeWithFallback(a => a.expireRoomsCron());
+  }
+
+  async close(): Promise<void> {
+    if (this.primary) await this.primary.close();
+    await this.fallback.close();
+  }
+}
+
+// ---------------------------------------------------------
 // Factory Method to Export Active Database Adapter
 // ---------------------------------------------------------
 export function getDatabaseAdapter(): DatabaseAdapter {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_KEY;
-
-  if (url && key && url.trim() !== '' && key.trim() !== '') {
-    console.log('Database initialized in SUPABASE mode.');
-    return new SupabaseAdapter(url, key);
-  } else {
-    const nodeEnv = process.env.NODE_ENV;
-    const dbFile = nodeEnv === 'test' ? ':memory:' : 'db.sqlite';
-    console.log(`Database initialized in SQLITE mode (${dbFile}).`);
-    return new SqliteAdapter(dbFile);
-  }
+  return new ResilientDatabaseAdapter(url, key);
 }
