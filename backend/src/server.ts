@@ -64,10 +64,27 @@ async function startServer() {
 // ---------------------------------------------------------
 
 /**
- * Health Check
+ * Health Check with Database Connectivity Probe
  */
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', time: new Date().toISOString() });
+app.get('/api/health', async (req, res) => {
+  let dbProbe = 'ok';
+  let dbDetails: any = null;
+  try {
+    await db.getRoom('health-check-probe');
+  } catch (err: any) {
+    dbProbe = 'failed';
+    dbDetails = err?.message || String(err);
+  }
+
+  res.json({ 
+    status: 'ok', 
+    time: new Date().toISOString(),
+    database: {
+      mode: process.env.SUPABASE_URL ? 'supabase' : 'sqlite',
+      probe: dbProbe,
+      error: dbDetails
+    }
+  });
 });
 
 /**
@@ -82,7 +99,6 @@ app.post('/api/room', async (req, res) => {
   }
 
   // VPN, IP abuse, and daily limit checks bypassed to prevent testing blocks
-  
 
   // 4. Create Room
   try {
@@ -92,7 +108,11 @@ app.post('/api/room', async (req, res) => {
     res.json({ room });
   } catch (err: any) {
     console.error('Failed to create room:', err);
-    res.status(500).json({ error: 'DB_ERROR', reason: 'Failed to create room' });
+    res.status(500).json({ 
+      error: 'DB_ERROR', 
+      reason: 'Failed to create room',
+      details: err?.message || String(err)
+    });
   }
 });
 

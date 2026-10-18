@@ -48,7 +48,9 @@ class SqliteAdapter implements DatabaseAdapter {
                 host_ip TEXT NOT NULL,
                 status TEXT CHECK(status IN ('active', 'matched', 'expired')) NOT NULL,
                 final_result TEXT,
-                created_at TEXT NOT NULL
+                created_at TEXT NOT NULL,
+                consent_date TEXT,
+                terms_version TEXT
               )
             `);
 
@@ -64,6 +66,8 @@ class SqliteAdapter implements DatabaseAdapter {
                 vibe_text TEXT,
                 has_submitted INTEGER DEFAULT 0,
                 created_at TEXT NOT NULL,
+                consent_date TEXT,
+                terms_version TEXT,
                 FOREIGN KEY (room_id) REFERENCES rooms (id) ON DELETE CASCADE,
                 UNIQUE (room_id, nickname)
               )
@@ -323,7 +327,9 @@ class SupabaseAdapter implements DatabaseAdapter {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      throw new Error(`Supabase error: ${error.message} (code: ${error.code})`);
+    }
     return data as Room;
   }
 
@@ -334,7 +340,9 @@ class SupabaseAdapter implements DatabaseAdapter {
       .eq('id', id)
       .maybeSingle();
 
-    if (error) throw error;
+    if (error) {
+      throw new Error(`Supabase error: ${error.message} (code: ${error.code})`);
+    }
     return data as Room | null;
   }
 
@@ -393,7 +401,7 @@ class SupabaseAdapter implements DatabaseAdapter {
       if (error.code === '23505') { // Postgres code for unique constraint violation
         throw new Error('NICKNAME_EXISTS');
       }
-      throw error;
+      throw new Error(`Supabase error: ${error.message} (code: ${error.code})`);
     }
 
     return {
