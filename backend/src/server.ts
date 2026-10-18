@@ -81,6 +81,7 @@ app.get('/api/health', async (req, res) => {
     time: new Date().toISOString(),
     database: {
       mode: process.env.SUPABASE_URL ? 'supabase' : 'sqlite',
+      supabase_url: process.env.SUPABASE_URL || null,
       probe: dbProbe,
       error: dbDetails
     }
